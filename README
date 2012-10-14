@@ -1,0 +1,11 @@
+installre libnfc e nfctools
+
+chmod +s nfc-list
+
+
+libfreefare
+
+
+
+nfc-eventd
+svn checkout http://nfc-tools.googlecode.com/svn/trunk/nfc-eventd nfc-eventd
