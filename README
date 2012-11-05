@@ -1,11 +1,18 @@
-installre libnfc e nfctools
+1) installre libnfc e nfctools
+Attualmente libnfc non cerca il lettore NFC su ttyACM.
+Serve quindi modificare questo file aggiungedo ttyACM:
+in libnfc-1.6.0-rc1/libnfc/buses/uart_posix.c
 
-chmod +s nfc-list
+char *serial_ports_device_radix[] = { "ttyUSB", "ttyS", "ttyACM", NULL };
+
+Libnfc va installato con questi parametri:
+./configure --with-drivers=pn532_uart --enable-serial-autoprobe --enable-debug
+
+volendo anzichè usare l'autoprobe si puo' definire il nome della seriale con cui parla
+con il reader se nota.
+
+2) chmod +s nfc-list
 
 
-libfreefare
-
-
-
-nfc-eventd
-svn checkout http://nfc-tools.googlecode.com/svn/trunk/nfc-eventd nfc-eventd
+Appunti:
+libfreefare non sembra funzionare bene
