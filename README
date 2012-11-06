@@ -3,7 +3,7 @@ Attualmente libnfc non cerca il lettore NFC su ttyACM.
 Serve quindi modificare questo file aggiungedo ttyACM:
 in libnfc-1.6.0-rc1/libnfc/buses/uart_posix.c
 
-char *serial_ports_device_radix[] = { "ttyUSB", "ttyS", "ttyACM", NULL };
+char *serial_ports_device_radix[] = { "ttyACM", NULL };
 
 Libnfc va installato con questi parametri:
 ./configure --with-drivers=pn532_uart --enable-serial-autoprobe --enable-debug
