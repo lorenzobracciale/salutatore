@@ -1,0 +1,12 @@
+diff -urN libnfc-1.4.2-orig/libnfc/buses/uart.h libnfc-1.4.2/libnfc/buses/uart.h
+--- libnfc-1.4.2-orig/libnfc/buses/uart.h	2012-12-01 12:00:33.389504854 +0100
++++ libnfc-1.4.2/libnfc/buses/uart.h	2012-12-01 21:48:54.936749863 +0100
+@@ -61,7 +61,7 @@
+   // XXX: Not tested
+ #    define DEFAULT_SERIAL_PORTS { "/dev/cuau0", "/dev/cuau1", "/dev/cuau2", "/dev/cuau3", NULL }
+ #  elif defined (__linux__)
+-#    define DEFAULT_SERIAL_PORTS { "/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3", "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3", NULL }
++#    define DEFAULT_SERIAL_PORTS { "/dev/ttyACM0", NULL }
+ #  else
+ #    error "Can't determine serial string for your system"
+ #  endif

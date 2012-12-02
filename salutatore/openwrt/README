@@ -1,0 +1,4 @@
+Makefile e patch per i package delle libnfc 1.4.2 (default) e 1.6.0-rc1 (funziona).
+Nel makefile ci sono dei flags del configure piuttosto fondamentali.
+
+
