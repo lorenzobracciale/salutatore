@@ -5,13 +5,12 @@ WGET=/usr/bin/wget
 NFC_LIST=/usr/bin/nfc-list
 PLAY=/opt/usr/bin/madplay
 USER_ID=""
-BEEP_STOPPER="/tmp/stopthebeep"
-GREETING_FILE="playingnow.mp3"
-PLAYED=""
+GREETING_FILE="/tmp/playingnow.mp3"
+DOWNLOAD_IN_PROGRESS="/tmp/stopplay"
 
 play_beep_or_greeting() {
 	while [ 1 ]; do
-		if [ ! -e $GREETING_FILE ]; then
+		if [ -e $DOWNLOAD_IN_PROGRESS ]; then
 			echo 'madplay beep.mp3'
 			$PLAY beep.mp3
 		else
@@ -20,7 +19,7 @@ play_beep_or_greeting() {
 		        rm $GREETING_FILE
 		        return
 		fi
-		sleep 3;
+	    sleep 1
 	done
 }
 
@@ -36,13 +35,12 @@ while [ 1 ]; do
 	echo "card read: " $IDCARD
 
 	if [ ! -z $IDCARD ]; then
-		PLAYED=""
-		echo "launching play beep and greets"
-		play_beep_or_greeting &
-		echo "done"
+		touch $DOWNLOAD_IN_PROGRESS
 		#start beeeping
+		play_beep_or_greeting &
 	        echo $WGET http://$SERVER/salutatore/$IDCARD/ -O $GREETING_FILE
 	        $WGET http://$SERVER/salutatore/$IDCARD/ -O $GREETING_FILE
+	        rm $DOWNLOAD_IN_PROGRESS
 	        while [ -e $GREETING_FILE ]; do
 	        	sleep 3;
 	        done
