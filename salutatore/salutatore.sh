@@ -3,16 +3,17 @@
 SERVER=soci.fusolab.net
 WGET=/usr/bin/wget
 NFC_LIST=/usr/bin/nfc-list
-PLAY=/opt/usr/bin/madplay
+PLAY=/usr/bin/madplay
 USER_ID=""
 GREETING_FILE="/tmp/playingnow.mp3"
 DOWNLOAD_IN_PROGRESS="/tmp/stopplay"
+BEEP_FILE="/root/beep.mp3"
 
 play_beep_or_greeting() {
 	while [ 1 ]; do
 		if [ -e $DOWNLOAD_IN_PROGRESS ]; then
 			echo 'madplay beep.mp3'
-			$PLAY beep.mp3
+			$PLAY $BEEP_FILE 
 		else
 		        echo "madplay playingnow.mp3"
 		        $PLAY $GREETING_FILE 
