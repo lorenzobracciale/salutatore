@@ -1,49 +1,53 @@
 #!/bin/ash
 
-SERVER=10.172.0.13
+SERVER=soci.fusolab.net
 WGET=/usr/bin/wget
+NFC_LIST=/usr/bin/nfc-list
+PLAY=/opt/usr/bin/madplay
 USER_ID=""
 BEEP_STOPPER="/tmp/stopthebeep"
+GREETING_FILE="playingnow.mp3"
+PLAYED=""
 
-nfc_list() {
-	#TODO: Call the real nfc_list, perhaps in a while loop?
-	echo "garbage"
-	echo "garbage"
-	echo "       UID (NFCID1): 6d  44  a5  29  "
-	echo "garbage"
-	echo "garbage"
-}
-
-play_beep() {
-	# play beep in background if /tmp/stopthebeep is not present
+play_beep_or_greeting() {
 	while [ 1 ]; do
-		if [ ! -e $BEEP_STOPPER ]; then
+		if [ ! -e $GREETING_FILE ]; then
 			echo 'madplay beep.mp3'
+			$PLAY beep.mp3
+		else
+		        echo "madplay playingnow.mp3"
+		        $PLAY $GREETING_FILE 
+		        rm $GREETING_FILE
+		        return
 		fi
-		sleep 1;
+		sleep 3;
 	done
 }
 
-touch $BEEP_STOPPER
-play_beep &
 
 while [ 1 ]; do
 
 	IDCARD=""
-	i=0
-	while [ -z $IDCARD ] && [ $i -lt 3 ]; do
-	        IDCARD=$(nfc_list | grep UID | awk -F ":" '{print $2}' | awk '{print $1$2$3$4}')
-	        let i=i+1
+	while [ -z $IDCARD ] ; do
+		echo "Try reading card..."
+	        IDCARD=$($NFC_LIST | grep UID | awk -F ":" '{print $2}' | awk '{print $1$2$3$4}')
 	done
+	
+	echo "card read: " $IDCARD
 
 	if [ ! -z $IDCARD ]; then
-		rm -f $BEEP_STOPPER
-	        echo $WGET http://$SERVER/salutatore/$IDCARD -O playingnow.wav
-	        sleep 3 #XXX: DELETE ME
-		touch $BEEP_STOPPER
-	        echo madplay playingnow.wav
+		PLAYED=""
+		echo "launching play beep and greets"
+		play_beep_or_greeting &
+		echo "done"
+		#start beeeping
+	        echo $WGET http://$SERVER/salutatore/$IDCARD/ -O $GREETING_FILE
+	        $WGET http://$SERVER/salutatore/$IDCARD/ -O $GREETING_FILE
+	        while [ -e $GREETING_FILE ]; do
+	        	sleep 3;
+	        done
 	fi
-	
+		
 	sleep 3;
 
 done
