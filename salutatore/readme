@@ -1,0 +1,26 @@
+appunti
+
+installare madplay e questi cosi
+
+usbhid.ipk
+kmodhid.ipk
+usbcore.ipk
+usbaudio.ipk
+
+kmod-usb-acm, ftdi, usbserial
+
+opkg -dest usb install flite
+
+
+opkg install libnfc libnfc-bin libnfc-examples 
+
+
+installing codepages (if needed)
+opkg install kmod-nls-cp437
+
+set usb as external storage for opkg
+http://wiki.openwrt.org/doc/techref/opkg#mount.point
+
+----
+sul server fusoci
+installre festival e  mbrola-it3, lame
