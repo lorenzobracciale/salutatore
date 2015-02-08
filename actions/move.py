@@ -12,21 +12,32 @@ class Head():
     dc = 50.0 #duty cycle
     def init(self):
         ''' inizialize gpio and move the head to front '''
-        GPIO.setup(GPIO_ZERO, GPIO.IN)
-        GPIO.setup(GPIO_STEP, GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(GPIO_DIR, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.GPIO_ZERO, GPIO.IN)
+        GPIO.setup(self.GPIO_STEP, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.GPIO_DIR, GPIO.OUT, initial=GPIO.LOW)
         self.goto_zero()
 
     def cleanup(self):
         ''' cleanup GPIO on close '''
-        GPIO.cleanup(GPIO_ZERO)
-        GPIO.cleanup(GPIO_STEP)
-        GPIO.cleanup(GPIO_DIR)
+        GPIO.cleanup(self.GPIO_ZERO)
+        GPIO.cleanup(self.GPIO_STEP)
+        GPIO.cleanup(self.GPIO_DIR)
+
     def rotate(self, angle, speed, direction):
         ''' look at a specifi angle '''
         pass
-    def raw_rotate(self, time, speed, direction):
-        pass
+    def raw_rotate(self, duration, speed, direction):
+        if direction == 'cw':
+            GPIO.output(self.GPIO_DIR, GPIO.HIGH)
+        elif direction == 'ccw':
+            GPIO.output(self.GPIO_DIR, GPIO.LOW)
+        else:
+            print "Direction not valid. Either choose cw or ccw"
+            return
+        p = GPIO.PWM(self.GPIO_STEP, speed)
+        p.start(self.dc)
+        time.sleep(duration)
+        p.stop()
 
     def goto_zero(self):
         freq = 20000.0 #hz

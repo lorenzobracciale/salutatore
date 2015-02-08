@@ -6,22 +6,24 @@ class DistanceTrigger(threading.Thread):
     GPIO_TRIG = 24
     GPIO_ECHO = 23
     shutdown = False
-    def __init__(callback, salvo):
+    def __init__(self, callback):
+        threading.Thread.__init__(self)
         self.callback = callback
-        self.salvo = salvo
-    def init_sensor():
+
+    def init_sensor(self):
         GPIO.setup(self.GPIO_TRIG, GPIO.OUT)
         GPIO.setup(self.GPIO_ECHO, GPIO.IN)
         GPIO.output(self.GPIO_TRIG, False)
         time.sleep(2)
-    def cleanup():
+
+    def cleanup(self):
         GPIO.cleanup(self.GPIO_TRIG)
         GPIO.cleanup(self.GPIO_ECHO)
 
-    def distance():
+    def distance(self):
         GPIO.output(self.GPIO_TRIG, True)
         time.sleep(0.00001)
-        GPIO.output(GPIO_TRIG, False)
+        GPIO.output(self.GPIO_TRIG, False)
 
         while GPIO.input(self.GPIO_ECHO) == 0:
             pulse_start = time.time()
@@ -41,10 +43,14 @@ class DistanceTrigger(threading.Thread):
 
     def stop(self):
         self.shutdown = True
+        print "Stopping distance polling thread"
 
     def run(self):
+        print "Start distance polling thread"
+        self.init_sensor()
         while not self.shutdown:
-            self.callback(self.distance(), self.salvo)
-			time.sleep(2)
+            self.callback(self.distance())
+            time.sleep(2)
+
 
 

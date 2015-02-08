@@ -1,6 +1,7 @@
 from actions.speak import Speak
 from actions.move import Head
 from triggers.distance import DistanceTrigger 
+import sys
 
 import RPi.GPIO as GPIO
 
@@ -18,6 +19,7 @@ class Salvo():
 
     def init(self):
         GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
         self.head.init()
     def behave(self, bclass, event):
         ''' register a behaviour '''
@@ -25,28 +27,29 @@ class Salvo():
         self.callbacks[event] = self.behaviour_instances[-1].callback
 
 
-    def run():
+    def run(self):
         ''' launch threads for all the triggers: new twitter message, new distance etc
         '''
-        distanceThread = DistanceTrigger(callbacks['distance'])
-        threadList.append(distanceThread)
+        print "Salvo is alive!"
+        print "press q + ENTER to quit"
+        distanceThread = DistanceTrigger(self.callbacks['distance'])
+        self.threadList.append(distanceThread)
 
         # launch threads
-        for thread in threadList:
-            t.run()
+        for t in self.threadList:
+            t.start()
         # no return from here
-        while True:
-            time.sleep(10)
+        c = sys.stdin.read(1)
+        if c == 'q':
+            print "you say quit, I quit"
+            self.stop()
 
-    def stop():
+
+    def stop(self):
+        print "Salvo is going to sleep..."
         self.head.cleanup()
-        for thread in threadList:
-            t.stop()
-            t.join()
+        for t in self.threadList:
+            if t.isAlive():
+                t.stop()
+                t.join()
 
-
-
-
-
-
-    
