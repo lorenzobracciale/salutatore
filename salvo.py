@@ -16,6 +16,7 @@ class Salvo():
     callbacks = {}
     threadList = []
     behaviour_instances = []
+    __is_busy = False
 
     def init(self):
         GPIO.setmode(GPIO.BOARD)
@@ -52,4 +53,12 @@ class Salvo():
             if t.isAlive():
                 t.stop()
                 t.join()
+
+    def is_busy():
+        return self.__is_busy
+
+    def busy(status):
+        # todo put a mutex
+        self.__is_busy = status
+
 
