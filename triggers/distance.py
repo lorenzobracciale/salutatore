@@ -49,8 +49,9 @@ class DistanceTrigger(threading.Thread):
         print "Start distance polling thread"
         self.init_sensor()
         while not self.shutdown:
-            self.callback(self.distance())
+            self.callback({'distance': self.distance()})
             time.sleep(2)
+        self.cleanup()
 
 
 
