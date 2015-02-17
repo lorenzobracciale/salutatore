@@ -1,6 +1,7 @@
 from actions.speak import Speak
 from actions.move import Head
 from triggers.distance import DistanceTrigger 
+from triggers.nfc import NfcTrigger 
 import sys
 
 import RPi.GPIO as GPIO
@@ -36,8 +37,12 @@ class Salvo():
         '''
         print "Salvo is alive!"
         print "press q + ENTER to quit"
-        distanceThread = DistanceTrigger(self.callbacks['distance'])
-        self.threadList.append(distanceThread)
+        if 'distance' in self.callbacks:
+            distanceThread = DistanceTrigger(self.callbacks['distance'])
+            self.threadList.append(distanceThread)
+        if 'nfc' in self.callbacks:
+            nfcThread = NfcTrigger(self.callbacks['nfc'])
+            self.threadList.append(nfcThread)
 
         # launch threads
         for t in self.threadList:
@@ -57,10 +62,10 @@ class Salvo():
                 t.stop()
                 t.join()
 
-    def is_busy():
+    def is_busy(self):
         return self.__is_busy
 
-    def busy(status):
+    def busy(self, status):
         # todo put a mutex
         self.__is_busy = status
 

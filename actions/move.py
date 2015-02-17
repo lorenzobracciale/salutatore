@@ -28,18 +28,21 @@ class Head():
         GPIO.cleanup(self.GPIO_DIR)
 
     def wake(self):
+        time.sleep(0.005)
         GPIO.output(self.GPIO_SLEEP, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(0.005)
 
     def sleep(self):
+        time.sleep(0.005)
         GPIO.output(self.GPIO_SLEEP, GPIO.LOW)
+        time.sleep(0.005)
 
     def rotate(self, angle, speed, direction):
         ''' look at a specifi angle '''
         pass
 
     def raw_rotate(self, duration, speed, direction):
-        #self.wake()
+        self.wake()
         if direction == 'cw':
             GPIO.output(self.GPIO_DIR, GPIO.HIGH)
         elif direction == 'ccw':
@@ -52,11 +55,11 @@ class Head():
         time.sleep(duration)
         p.stop()
         #self.position +=  duration * speed * self.degree_per_pulse % 360
-        #self.sleep()
+        self.sleep()
         
 
     def goto_zero(self):
-        #self.wake()
+        self.wake()
         freq = 20000.0 #hz
         p = GPIO.PWM(self.GPIO_STEP, freq)
         
@@ -66,4 +69,4 @@ class Head():
             time.sleep(0.001)
         p.stop()
         self.position = 0.0
-        #self.sleep()
+        self.sleep()
