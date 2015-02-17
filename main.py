@@ -5,6 +5,7 @@ Main main program
 """
 from salvo import Salvo
 from behaviours.proximity import ProximityBehaviour
+from behaviours.carnival import CarnivalBehaviour
 
 
 
@@ -16,6 +17,7 @@ def main():
         salvo.init()
         # init behaviours
         salvo.behave(ProximityBehaviour, 'distance')
+        salvo.behave(CarnivalBehaviour, 'distance')
 
         # start
         salvo.run()

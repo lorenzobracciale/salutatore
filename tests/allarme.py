@@ -28,7 +28,7 @@ def torna_allo_zero():
 	try:
 		while GPIO.input(ZERO):
 			p.start(dc)
-			time.sleep(0.01)
+			time.sleep(0.001)
 	except KeyboardInterrupt:
 		pass
 	p.stop()

@@ -11,8 +11,10 @@ class ProximityBehaviour():
         if distance < 100:
             self.idle = False
             self.salvo.speak.say("Mi stai troppo vicino, spostati!", True)
+            self.salvo.head.wake()
             self.salvo.head.raw_rotate(10, 44000, 'cw')
-
+            self.salvo.head.goto_zero()
+            self.salvo.head.sleep()
             
 
 

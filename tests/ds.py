@@ -9,7 +9,6 @@ dir_pin = 11
 step_pin = 12
 frequency = 1000.0 #hz
 dc = 30.0 #duty cycle
-dc2 = 50.0
 GPIO.setup(chan_list, GPIO.OUT, initial=GPIO.LOW)
 
 try:
@@ -17,20 +16,14 @@ try:
 	for i in range(4):
 		GPIO.output(dir_pin, GPIO.LOW)                # sets all to GPIO.LOW
 		p.start(dc)
-		time.sleep(0.1)
+		time.sleep(0.3)
 		p.stop()
+		time.sleep(0.1)
 		GPIO.output(dir_pin, GPIO.HIGH)                # sets all to GPIO.LOW
 		p.start(dc)
-		time.sleep(1)
+		time.sleep(0.3)
 		p.stop()
-		GPIO.output(dir_pin, GPIO.LOW)                # sets all to GPIO.LOW
-		p.start(dc)
-		time.sleep(1)
-		p.stop()
-		GPIO.output(dir_pin, GPIO.HIGH)                # sets all to GPIO.LOW
-		p.start(dc)
 		time.sleep(0.1)
-		p.stop()
 except KeyboardInterrupt:
 	pass
 p.stop()

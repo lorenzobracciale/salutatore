@@ -10,7 +10,7 @@ class Speak():
         ''' say a sentence '''
         # patch for espeak bug
         # http://www.raspberrypi.org/forums/viewtopic.php?f=38&t=98201
-        text = 'hh ' + text
+        #text = 'hh ' + text
 
         if sync:
             # blocking call, wait for finish

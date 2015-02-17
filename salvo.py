@@ -18,9 +18,12 @@ class Salvo():
     behaviour_instances = []
 
     def init(self):
+        print "init init"
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
         self.head.init()
+        print "end init"
+
     def behave(self, bclass, event):
         ''' register a behaviour '''
         self.behaviour_instances.append(bclass(self))
